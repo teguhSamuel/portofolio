@@ -1,0 +1,929 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Mizan Dev</title>
+<meta name="description" content="Marlay Mizan Nurrohman (Mizan), fullstack developer dengan sekitar 5 tahun pengalaman membangun sistem web dan aplikasi Android.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Marlay Mizan Nurrohman, Fullstack Developer">
+<meta property="og:description" content="Marlay Mizan Nurrohman (Mizan), fullstack developer dengan sekitar 5 tahun pengalaman membangun sistem web dan aplikasi Android.">
+<meta name="theme-color" content="#090d13">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23090d13'/%3E%3Ctext x='32' y='43' font-family='monospace' font-size='28' font-weight='700' text-anchor='middle' fill='%23ff6b3d'%3E%26lt;/%26gt;%3C/text%3E%3C/svg%3E">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=DM+Sans:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<script src="https://cdn.tailwindcss.com/3.4.17"></script>
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        colors: {
+          bg: 'var(--bg)', surface: 'var(--surface)', surface2: 'var(--surface2)',
+          line: 'var(--line)', fg: 'var(--fg)', muted: 'var(--muted)',
+          accent: 'var(--accent)', teal: 'var(--teal)'
+        },
+        fontFamily: {
+          display: ['"Bricolage Grotesque"', 'system-ui', 'sans-serif'],
+          sans: ['"DM Sans"', 'system-ui', 'sans-serif'],
+          mono: ['"JetBrains Mono"', 'ui-monospace', 'monospace']
+        }
+      }
+    }
+  };
+</script>
+<style>
+  :root {
+    --bg: #090d13;
+    --surface: #101722;
+    --surface2: #16202e;
+    --line: #243044;
+    --fg: #e8eef7;
+    --muted: #8d9bb0;
+    --accent: #ff6b3d;
+    --accent-ink: #1a0a04;
+    --teal: #38d0c0;
+    --obj: #cfd9e8;
+    --glow: rgba(255, 107, 61, .16);
+    color-scheme: dark;
+  }
+  @media (prefers-color-scheme: light) {
+    :root:not([data-theme="dark"]) {
+      --bg: #f3f5f9; --surface: #ffffff; --surface2: #e9edf4; --line: #d3dae6;
+      --fg: #0c1220; --muted: #566277; --accent: #e5471a; --accent-ink: #ffffff;
+      --teal: #0f9f92; --obj: #1d2638; --glow: rgba(229, 71, 26, .12);
+      color-scheme: light;
+    }
+  }
+  :root[data-theme="light"] {
+    --bg: #f3f5f9; --surface: #ffffff; --surface2: #e9edf4; --line: #d3dae6;
+    --fg: #0c1220; --muted: #566277; --accent: #e5471a; --accent-ink: #ffffff;
+    --teal: #0f9f92; --obj: #1d2638; --glow: rgba(229, 71, 26, .12);
+    color-scheme: light;
+  }
+  :root[data-theme="dark"] {
+    --bg: #090d13; --surface: #101722; --surface2: #16202e; --line: #243044;
+    --fg: #e8eef7; --muted: #8d9bb0; --accent: #ff6b3d; --accent-ink: #1a0a04;
+    --teal: #38d0c0; --obj: #cfd9e8; --glow: rgba(255, 107, 61, .16);
+    color-scheme: dark;
+  }
+
+  html { scroll-behavior: smooth; }
+  body { background: var(--bg); color: var(--fg); font-size: 16px; line-height: 1.6; overflow-x: hidden; }
+  body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 60; background: var(--bg); }
+  section[id] { scroll-margin-top: 5rem; }
+  h1, h2, h3 { text-wrap: balance; }
+  :focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 6px; }
+
+  .gutter {
+    padding-left: max(16px, env(safe-area-inset-left, 0px));
+    padding-right: max(16px, env(safe-area-inset-right, 0px));
+  }
+  .eyebrow { font-family: "JetBrains Mono", ui-monospace, monospace; font-size: .75rem; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); }
+
+  .topbar { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 50; background: color-mix(in srgb, var(--bg) 82%, transparent); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); border-bottom: 1px solid var(--line); }
+  .navlink { color: var(--muted); transition: color .2s; }
+  .navlink:hover { color: var(--fg); }
+
+  .btn { display: inline-flex; align-items: center; gap: .5rem; padding: .8rem 1.4rem; border-radius: 999px; font-weight: 700; transition: transform .2s, box-shadow .2s, background .2s; }
+  .btn-primary { background: var(--accent); color: var(--accent-ink); box-shadow: 0 10px 30px -10px var(--accent); }
+  .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 16px 36px -10px var(--accent); }
+  .btn-ghost { border: 1px solid var(--line); color: var(--fg); background: var(--surface); }
+  .btn-ghost:hover { border-color: var(--accent); transform: translateY(-2px); }
+
+  .hero-wrap { position: relative; overflow: hidden; }
+  .hero-glow { position: absolute; inset: 0; pointer-events: none; background: radial-gradient(520px circle at var(--gx, 70%) var(--gy, 30%), var(--glow), transparent 70%); }
+  .grid-bg { position: absolute; inset: 0; pointer-events: none; opacity: .5; background-image: linear-gradient(var(--line) 1px, transparent 1px), linear-gradient(90deg, var(--line) 1px, transparent 1px); background-size: 56px 56px; -webkit-mask-image: radial-gradient(ellipse at 60% 40%, #000 0%, transparent 70%); mask-image: radial-gradient(ellipse at 60% 40%, #000 0%, transparent 70%); }
+  .stage { position: relative; width: 100%; aspect-ratio: 1 / 1; max-height: 34rem; }
+  .stage-fb { position: absolute; inset: 0; display: grid; place-items: center; }
+  .stage-fb .cube-scene { --s: 8rem; }
+  .stage .orb { position: absolute; inset: 16%; border-radius: 50%; background: radial-gradient(circle at 35% 30%, var(--accent), transparent 60%), radial-gradient(circle at 70% 75%, var(--teal), transparent 60%); filter: blur(34px); opacity: .45; animation: pulse 6s ease-in-out infinite; }
+  .stage canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+  .mark { background: linear-gradient(transparent 62%, color-mix(in srgb, var(--accent) 45%, transparent) 62%); padding: 0 .1em; }
+  .in { animation: in .8s cubic-bezier(.2, .7, .2, 1) both; }
+  .in.d1 { animation-delay: .08s; } .in.d2 { animation-delay: .16s; } .in.d3 { animation-delay: .24s; } .in.d4 { animation-delay: .32s; }
+  @keyframes in { from { opacity: 0; transform: translateY(22px); } to { opacity: 1; transform: none; } }
+  @keyframes pulse { 0%, 100% { transform: scale(.94); } 50% { transform: scale(1.06); } }
+  .scrollhint { display: inline-block; width: 1.4rem; height: 2.2rem; border: 1.5px solid var(--muted); border-radius: 999px; position: relative; }
+  .scrollhint::after { content: ""; position: absolute; left: 50%; top: .4rem; width: 3px; height: .45rem; margin-left: -1.5px; border-radius: 2px; background: var(--accent); animation: drip 1.8s ease-in-out infinite; }
+  @keyframes drip { 0% { opacity: 0; transform: translateY(0); } 40% { opacity: 1; } 100% { opacity: 0; transform: translateY(.8rem); } }
+
+  @supports (animation-timeline: view()) {
+    .reveal { animation: rise linear both; animation-timeline: view(); animation-range: entry 0% entry 45%; }
+  }
+  @keyframes rise { from { opacity: .35; transform: translateY(32px); } to { opacity: 1; transform: none; } }
+
+  .chip { padding: .5rem 1rem; border-radius: 999px; border: 1px solid var(--line); background: var(--surface); color: var(--muted); font-weight: 500; font-size: .9rem; transition: all .2s; }
+  .chip:hover { color: var(--fg); border-color: var(--muted); }
+  .chip[aria-pressed="true"] { background: var(--fg); color: var(--bg); border-color: var(--fg); }
+
+  .tiltwrap { perspective: 1100px; }
+  .proj { position: relative; display: flex; flex-direction: column; height: 100%; border: 1px solid var(--line); border-radius: 1.25rem; background: var(--surface); padding: .75rem; transform-style: preserve-3d; transform: rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg)); transition: transform .25s ease-out, border-color .25s, box-shadow .25s; animation: pop .55s cubic-bezier(.2, .7, .2, 1) both; }
+  .proj:hover { border-color: color-mix(in srgb, var(--c) 70%, var(--line)); box-shadow: 0 30px 60px -30px color-mix(in srgb, var(--c) 55%, transparent); }
+  .proj::after { content: ""; position: absolute; inset: 0; border-radius: inherit; pointer-events: none; opacity: 0; transition: opacity .25s; background: radial-gradient(380px circle at var(--mx, 50%) var(--my, 0%), color-mix(in srgb, var(--c) 18%, transparent), transparent 65%); }
+  .proj:hover::after { opacity: 1; }
+  .proj .lift { transform: translateZ(34px); }
+  .proj .lift2 { transform: translateZ(18px); }
+  @keyframes pop { from { opacity: 0; transform: translateY(18px) scale(.97); } to { opacity: 1; transform: none; } }
+  .tag { font-family: "JetBrains Mono", ui-monospace, monospace; font-size: .72rem; padding: .2rem .55rem; border-radius: .5rem; background: var(--surface2); color: var(--muted); }
+  .plat { font-family: "JetBrains Mono", ui-monospace, monospace; font-size: .7rem; letter-spacing: .12em; text-transform: uppercase; display: inline-flex; align-items: center; gap: .45rem; color: var(--fg); }
+  .plat i { width: .55rem; height: .55rem; border-radius: 50%; background: var(--c); box-shadow: 0 0 10px var(--c); }
+  .plink { font-weight: 700; font-size: .9rem; display: inline-flex; gap: .3rem; align-items: center; transition: color .2s; }
+  .plink:hover { color: var(--c); }
+
+  [hidden] { display: none !important; }
+  .shot { position: relative; display: block; width: 100%; aspect-ratio: 16 / 10; overflow: hidden; border-radius: .85rem; background: var(--surface2); cursor: zoom-in; padding: 0; border: 1px solid var(--line); }
+  .shot img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transition: transform .6s cubic-bezier(.2, .7, .2, 1); }
+  .proj:hover .shot img { transform: scale(1.04); }
+  .shot .zoom { position: absolute; right: .6rem; bottom: .6rem; padding: .3rem .75rem; border-radius: 999px; font-size: .75rem; font-weight: 700; color: var(--fg); background: color-mix(in srgb, var(--bg) 78%, transparent); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); opacity: 0; transform: translateY(4px); transition: opacity .2s, transform .2s; }
+  .proj:hover .zoom, .shot:focus-visible .zoom { opacity: 1; transform: none; }
+  @media (hover: none) { .shot .zoom { opacity: 1; transform: none; } }
+  img.shot-light { display: none; }
+  @media (prefers-color-scheme: light) {
+    :root:not([data-theme="dark"]) img.shot-dark { display: none; }
+    :root:not([data-theme="dark"]) img.shot-light { display: block; }
+  }
+  :root[data-theme="light"] img.shot-dark { display: none; }
+  :root[data-theme="light"] img.shot-light { display: block; }
+
+  .lb { position: fixed; inset: 0; z-index: 80; display: grid; place-items: center; padding: max(16px, env(safe-area-inset-top, 0px)) max(16px, env(safe-area-inset-right, 0px)) max(16px, env(safe-area-inset-bottom, 0px)) max(16px, env(safe-area-inset-left, 0px)); background: color-mix(in srgb, var(--bg) 90%, transparent); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); animation: fade .2s ease both; overflow-y: auto; }
+  .lb-panel { width: min(100%, 1080px); display: flex; flex-direction: column; gap: .9rem; }
+  .lb-img { border-radius: 1rem; overflow: hidden; border: 1px solid var(--line); background: var(--surface2); }
+  .lb-img img { display: block; width: 100%; height: auto; max-height: 64vh; object-fit: contain; }
+  .iconbtn { display: grid; place-items: center; width: 2.6rem; height: 2.6rem; flex: none; border-radius: 999px; border: 1px solid var(--line); background: var(--surface); color: var(--fg); transition: border-color .2s, transform .2s; }
+  .iconbtn:hover { border-color: var(--accent); transform: translateY(-1px); }
+  @keyframes fade { from { opacity: 0; } to { opacity: 1; } }
+
+  .marquee { overflow: hidden; -webkit-mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent); mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent); }
+  .track { display: flex; gap: .75rem; width: max-content; animation: slide 36s linear infinite; }
+  .marquee:hover .track { animation-play-state: paused; }
+  .track span { font-family: "Bricolage Grotesque", system-ui, sans-serif; font-weight: 600; font-size: 1.15rem; padding: .6rem 1.2rem; border: 1px solid var(--line); border-radius: 999px; background: var(--surface); white-space: nowrap; }
+  @keyframes slide { to { transform: translateX(calc(-50% - .375rem)); } }
+
+  .skillcard { border: 1px solid var(--line); border-radius: 1.25rem; background: var(--surface); padding: 1.5rem; transition: transform .25s, border-color .25s; }
+  .skillcard:hover { transform: translateY(-4px); border-color: var(--accent); }
+  .skillcard li { display: flex; align-items: center; gap: .6rem; color: var(--muted); }
+  .skillcard li::before { content: ""; width: .4rem; height: .4rem; border-radius: 50%; background: var(--accent); flex: none; }
+
+  .cube-scene { --s: 9rem; width: var(--s); height: var(--s); perspective: 700px; margin-inline: auto; }
+  .cube { position: relative; width: 100%; height: 100%; transform-style: preserve-3d; animation: spin 18s linear infinite; }
+  .cube:hover { animation-play-state: paused; }
+  .cube div { position: absolute; inset: 0; display: grid; place-items: center; font-family: "JetBrains Mono", ui-monospace, monospace; font-size: .85rem; letter-spacing: .08em; text-transform: uppercase; color: var(--fg); background: color-mix(in srgb, var(--surface) 78%, transparent); border: 1px solid color-mix(in srgb, var(--accent) 55%, var(--line)); backdrop-filter: blur(2px); }
+  .cube .f1 { transform: translateZ(calc(var(--s) / 2)); }
+  .cube .f2 { transform: rotateY(90deg) translateZ(calc(var(--s) / 2)); }
+  .cube .f3 { transform: rotateY(180deg) translateZ(calc(var(--s) / 2)); }
+  .cube .f4 { transform: rotateY(-90deg) translateZ(calc(var(--s) / 2)); }
+  .cube .f5 { transform: rotateX(90deg) translateZ(calc(var(--s) / 2)); }
+  .cube .f6 { transform: rotateX(-90deg) translateZ(calc(var(--s) / 2)); }
+  @keyframes spin { from { transform: rotateX(-22deg) rotateY(0deg); } to { transform: rotateX(-22deg) rotateY(360deg); } }
+
+  .toast { position: fixed; left: 50%; bottom: calc(1.25rem + env(safe-area-inset-bottom, 0px)); transform: translate(-50%, 20px); opacity: 0; pointer-events: none; background: var(--fg); color: var(--bg); padding: .65rem 1.1rem; border-radius: 999px; font-weight: 700; font-size: .9rem; transition: all .3s; z-index: 70; }
+  .toast.show { opacity: 1; transform: translate(-50%, 0); }
+
+  @media (max-width: 640px) { .cube-scene { --s: 7.5rem; } .stage { max-height: 26rem; } }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    *, *::before, *::after { animation: none !important; transition: none !important; }
+    .proj { transform: none !important; }
+  }
+
+  .cbox { --c: var(--accent); position: relative; display: flex; align-items: center; gap: .9rem; width: 100%; padding: .9rem 1rem; border: 1px solid var(--line); border-radius: 1.1rem; background: var(--bg); transition: transform .25s, border-color .25s, box-shadow .25s; }
+  @media (min-width: 640px) { .cbox { width: calc(50% - .5rem); } }
+  @media (min-width: 1024px) { .cbox { width: calc(33.333% - .7rem); } }
+  .cbox:hover, .cbox:focus-within { transform: translateY(-3px); border-color: var(--c); box-shadow: 0 18px 36px -22px var(--c); }
+  .cbox .main { display: flex; align-items: center; gap: .9rem; flex: 1 1 auto; min-width: 0; }
+  .cbox .main::after { content: ""; position: absolute; inset: 0; border-radius: inherit; }
+  .cbox .main:focus-visible { outline: none; }
+  .cbox:focus-within { outline: 2px solid var(--accent); outline-offset: 3px; }
+  .cico { display: grid; place-items: center; flex: none; width: 2.9rem; height: 2.9rem; border-radius: .85rem; background: color-mix(in srgb, var(--c) 14%, var(--surface2)); color: var(--c); transition: background .25s, color .25s; }
+  .cbox:hover .cico { background: var(--c); color: #fff; }
+  .cbox .txt { min-width: 0; }
+  .cbox .eyebrow { display: block; }
+  .cbox .val { display: block; font-weight: 700; line-height: 1.3; overflow-wrap: anywhere; }
+  .cbox .copy { position: relative; z-index: 1; flex: none; padding: .4rem .85rem; border-radius: 999px; border: 1px solid var(--line); background: var(--surface); font-size: .78rem; font-weight: 700; color: var(--fg); transition: border-color .2s, background .2s; }
+  .cbox .copy:hover { border-color: var(--c); }
+  .lang { display: inline-flex; align-items: center; height: 2.5rem; padding: .2rem; border-radius: 999px; border: 1px solid var(--line); background: var(--surface); }
+  .lang button { height: 100%; min-width: 2.1rem; padding: 0 .55rem; border-radius: 999px; font-family: "JetBrains Mono", ui-monospace, monospace; font-size: .72rem; font-weight: 700; letter-spacing: .06em; color: var(--muted); transition: background .2s, color .2s; }
+  .lang button:hover { color: var(--fg); }
+  .lang button[aria-pressed="true"] { background: var(--fg); color: var(--bg); }
+</style>
+
+</head>
+<body>
+<header class="topbar gutter">
+  <div class="mx-auto flex max-w-6xl items-center justify-between py-3.5">
+    <a href="#top" class="font-display text-xl font-extrabold tracking-tight">Mizan<span class="text-accent">.</span>dev</a>
+    <nav class="hidden items-center gap-8 text-sm font-medium md:flex" aria-label="Navigasi utama" data-ia="a_nav">
+      <a class="navlink" href="#proyek" data-i="nav_projects">Proyek</a>
+      <a class="navlink" href="#keahlian" data-i="nav_skills">Keahlian</a>
+      <a class="navlink" href="#tentang" data-i="nav_about">Tentang</a>
+      <a class="navlink" href="#kontak" data-i="nav_contact">Kontak</a>
+    </nav>
+    <div class="flex items-center gap-2">
+      <div class="lang" role="group" aria-label="Bahasa" data-ia="a_lang">
+        <button type="button" data-lang="id" aria-pressed="true">ID</button>
+        <button type="button" data-lang="en" aria-pressed="false">EN</button>
+      </div>
+      <button id="themeBtn" type="button" class="grid h-10 w-10 place-items-center rounded-full border border-line bg-surface transition hover:border-accent" aria-label="Ganti tema terang atau gelap" data-ia="a_theme">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 3a9 9 0 0 1 0 18z" fill="currentColor"/></svg>
+      </button>
+      <button id="menuBtn" type="button" class="grid h-10 w-10 place-items-center rounded-full border border-line bg-surface md:hidden" aria-label="Buka menu" data-ia="a_menu" aria-expanded="false" aria-controls="mobileNav">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+      </button>
+    </div>
+  </div>
+  <nav id="mobileNav" class="mx-auto max-w-6xl flex-col gap-1 pb-4 text-lg font-medium md:hidden" hidden aria-label="Navigasi seluler" data-ia="a_mnav">
+    <a class="block rounded-lg px-2 py-2.5 hover:bg-surface" href="#proyek" data-i="nav_projects">Proyek</a>
+    <a class="block rounded-lg px-2 py-2.5 hover:bg-surface" href="#keahlian" data-i="nav_skills">Keahlian</a>
+    <a class="block rounded-lg px-2 py-2.5 hover:bg-surface" href="#tentang" data-i="nav_about">Tentang</a>
+    <a class="block rounded-lg px-2 py-2.5 hover:bg-surface" href="#kontak" data-i="nav_contact">Kontak</a>
+  </nav>
+</header>
+
+<main id="top">
+
+  <section class="hero-wrap gutter" id="hero">
+    <div class="grid-bg"></div>
+    <div class="hero-glow" id="heroGlow"></div>
+    <div class="relative mx-auto grid max-w-6xl items-center gap-6 py-10 md:py-14 lg:grid-cols-[1.05fr_.95fr] lg:gap-10">
+      <div class="min-w-0">
+        <p class="eyebrow in d1 mb-5 flex items-center gap-2"><span class="inline-block h-2 w-2 rounded-full bg-teal" style="box-shadow:0 0 10px var(--teal)"></span><span data-i="hero_eyebrow">Fullstack Developer · terbuka untuk peluang kerja</span></p>
+        <h1 class="in d2 font-display text-[2.6rem] font-extrabold leading-[1.02] tracking-tight sm:text-6xl lg:text-7xl" data-i="hero_title">
+          Seorang Full-Stack Developer <span class="mark">web</span> dan <span class="mark">Android</span>.
+        </h1>
+        <p class="in d3 mt-6 max-w-xl text-lg text-muted" data-i="hero_text">
+          Saya Marlay Mizan Nurrohman—biasa dipanggil Mizan. Berpengalaman dalam merancang dan mengembangkan sistem end-to-end, mulai dari arsitektur database, manajemen API, hingga antarmuka pengguna untuk aplikasi monitoring, keuangan, sistem absensi, dan Point of Sale (POS), dll.
+        </p>
+        <div class="in d4 mt-8 flex flex-wrap gap-3">
+          <a href="#proyek" class="btn btn-primary"><span data-i="hero_cta1">Lihat proyek</span>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
+          </a>
+          <a href="#kontak" class="btn btn-ghost" data-i="hero_cta2">Hubungi saya</a>
+        </div>
+        <dl id="stats" class="in d4 mt-10 grid max-w-md grid-cols-4 gap-3 border-t border-line pt-6"></dl>
+      </div>
+      <div class="stage in d2 mx-auto" id="stage" role="img" aria-label="Ilustrasi 3D chip prosesor di papan sirkuit dengan ikon teknologi yang mengorbit" data-ia="a_stage">
+        <div class="orb"></div>
+        <div id="stageFb" class="stage-fb" hidden>
+          <div class="cube-scene"><div class="cube"><div class="f1">CPU</div><div class="f2">APK</div><div class="f3">WEB</div><div class="f4">VUE</div><div class="f5">API</div><div class="f6">SQL</div></div></div>
+        </div>
+      </div>
+    </div>
+    <div class="relative mx-auto flex max-w-6xl justify-center pb-6"><span class="scrollhint" aria-hidden="true"></span></div>
+  </section>
+
+  <section id="proyek" class="gutter py-16 md:py-24">
+    <div class="mx-auto max-w-6xl">
+      <div class="reveal flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
+        <div class="min-w-0">
+          <p class="eyebrow mb-3" data-i="proj_eyebrow">Proyek & Karya</p>
+          <h2 class="font-display text-4xl font-extrabold tracking-tight sm:text-5xl" data-i="proj_title">Kumpulan Proyek Pilihan</h2>
+          <p class="mt-3 max-w-xl text-muted" data-i="proj_text">Berbagai solusi berbasis web dan aplikasi Android yang telah saya kembangkan. Klik pada gambar untuk memperbesar pratinjau atau arahkan kursor pada kartu untuk melihat efek interaktif.</p>
+        </div>
+        <div class="flex flex-wrap gap-2" role="group" aria-label="Filter proyek" data-ia="a_filters" id="filters">
+          <button type="button" class="chip" data-f="all" aria-pressed="true" data-i="f_all">Semua</button>
+          <button type="button" class="chip" data-f="android" aria-pressed="false">Android</button>
+          <button type="button" class="chip" data-f="web" aria-pressed="false">Website</button>
+        </div>
+      </div>
+      <div id="grid" class="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3"></div>
+    </div>
+  </section>
+
+  <section id="keahlian" class="gutter border-y border-line bg-surface py-16 md:py-24">
+    <div class="mx-auto max-w-6xl">
+      <div class="reveal">
+        <p class="eyebrow mb-3" data-i="skill_eyebrow">Keahlian</p>
+        <h2 class="font-display text-4xl font-extrabold tracking-tight sm:text-5xl" data-i="skill_title">Teknologi yang saya pakai</h2>
+      </div>
+      <div class="marquee reveal mt-10" aria-hidden="true">
+        <div class="track">
+          <span>Laravel</span><span>CodeIgniter</span><span>Express.js</span><span>Spring Boot</span><span>Vue.js</span><span>jQuery</span><span>Bootstrap</span><span>MySQL</span><span>SQL Server</span><span>Supabase</span><span>Kotlin</span><span>Java Android</span><span>FCM</span><span>SQLite</span><span>Tailwind CSS</span><span>REST API</span><span>JavaScript</span><span>TypeScript</span><span>PHP</span><span>B4A</span><span>Apache Netbeans</span>
+          <span>Laravel</span><span>CodeIgniter</span><span>Express.js</span><span>Spring Boot</span><span>Vue.js</span><span>jQuery</span><span>Bootstrap</span><span>MySQL</span><span>SQL Server</span><span>Supabase</span><span>Kotlin</span><span>Java Android</span><span>FCM</span><span>SQLite</span><span>Tailwind CSS</span><span>REST API</span><span>JavaScript</span><span>TypeScript</span><span>PHP</span><span>B4A</span><span>Apache Netbeans</span>
+        </div>
+      </div>
+      <div class="mt-10 grid gap-5 md:grid-cols-2 lg:grid-cols-4">
+        <article class="skillcard reveal">
+          <h3 class="font-display text-2xl font-bold">Backend</h3>
+          <p class="mb-4 mt-1 text-sm text-muted" data-i="sk_back">Logika server dan API untuk sistem web dan mobile.</p>
+          <ul class="grid gap-2"><li>PHP</li><li>Java</li><li>TypeScript</li><li>Laravel</li><li>CodeIgniter</li><li>Express.js</li><li>Spring Boot</li><li>REST API</li></ul>
+        </article>
+        <article class="skillcard reveal">
+          <h3 class="font-display text-2xl font-bold">Frontend</h3>
+          <p class="mb-4 mt-1 text-sm text-muted" data-i="sk_front">Antarmuka web untuk dashboard dan sistem internal.</p>
+          <ul class="grid gap-2"><li>Vue.js</li><li>jQuery</li><li>Bootstrap</li><li>Tailwind CSS</li><li>JavaScript</li></ul>
+        </article>
+        <article class="skillcard reveal">
+          <h3 class="font-display text-2xl font-bold">Database</h3>
+          <p class="mb-4 mt-1 text-sm text-muted" data-i="sk_db">Penyimpanan dan pengolahan data sistem.</p>
+          <ul class="grid gap-2"><li>MySQL</li><li>SQLite</li><li>SQL Server</li><li>PostgreSQL</li><li>Supabase</li></ul>
+        </article>
+        <article class="skillcard reveal">
+          <h3 class="font-display text-2xl font-bold">Android</h3>
+          <p class="mb-4 mt-1 text-sm text-muted" data-i="sk_and">Aplikasi ponsel yang terhubung ke server.</p>
+          <ul class="grid gap-2"><li>Kotlin</li><li>Java Android</li><li>Firebase Cloud Messaging (FCM)</li><li>B4A</li></ul>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section id="tentang" class="gutter py-16 md:py-24">
+    <div class="mx-auto grid max-w-6xl items-center gap-12 md:grid-cols-[1.2fr_.8fr]">
+      <div class="reveal min-w-0">
+        <p class="eyebrow mb-3" data-i="about_eyebrow">Tentang saya</p>
+        <h2 class="font-display text-4xl font-extrabold tracking-tight sm:text-5xl" data-i="about_title">Full-Stack Developer. Solusi End-to-End dari Antarmuka hingga Backend</h2>
+        <p class="mt-5 max-w-prose text-lg text-muted" data-i="about_text">
+          Saya Marlay Mizan Nurrohman, biasa dipanggil Mizan. Berpengalaman dalam merancang dan mengembangkan sistem skala enterprise—mencakup arsitektur server, basis data, hingga antarmuka pengguna—khususnya untuk platform pemantauan mesin, manajemen kinerja karyawan, sistem keuangan, absensi berbasis lokasi, dan Point of Sale (POS), dll.
+        </p>
+        <dl class="mt-8 grid max-w-lg grid-cols-2 gap-x-8 gap-y-5 text-sm">
+          <div><dt class="eyebrow mb-1" data-i="ab_name">Nama lengkap</dt><dd class="font-medium">Marlay Mizan Nurrohman</dd></div>
+          <div><dt class="eyebrow mb-1" data-i="ab_nick">Dipanggil</dt><dd class="font-medium">Mizan</dd></div>
+          <div><dt class="eyebrow mb-1" data-i="ab_role">Peran</dt><dd class="font-medium">Fullstack Developer</dd></div>
+          <div><dt class="eyebrow mb-1" data-i="ab_exp">Pengalaman</dt><dd class="font-medium" data-i="ab_exp_v">Sekitar 5 tahun</dd></div>
+          <div><dt class="eyebrow mb-1" data-i="ab_focus">Fokus</dt><dd class="font-medium" data-i="ab_focus_v">Web dan Android</dd></div>
+          <div><dt class="eyebrow mb-1" data-i="ab_status">Status</dt><dd class="font-medium" data-i="ab_status_v">Terbuka untuk kerja</dd></div>
+        </dl>
+      </div>
+      <div class="reveal" aria-hidden="true">
+        <div class="cube-scene">
+          <div class="cube">
+            <div class="f1">Web</div><div class="f2">Android</div><div class="f3">API</div>
+            <div class="f4">UI</div><div class="f5">Data</div><div class="f6">Code</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="kontak" class="gutter pb-16 md:pb-24">
+    <div class="reveal relative mx-auto max-w-6xl overflow-hidden rounded-[1.75rem] border border-line bg-surface px-6 py-14 text-center md:px-12 md:py-20">
+      <div class="pointer-events-none absolute inset-0" style="background:radial-gradient(600px circle at 50% 0%, var(--glow), transparent 70%)"></div>
+      <div class="relative">
+        <p class="eyebrow mb-3" data-i="contact_eyebrow">Kontak</p>
+        <h2 class="mx-auto max-w-2xl font-display text-4xl font-extrabold tracking-tight sm:text-6xl" data-i="contact_title">Punya proyek atau lowongan untuk saya?</h2>
+        <p id="contactNote" class="mx-auto mt-4 max-w-lg text-muted" data-i="contact_note">Pilih cara yang paling nyaman, saya balas secepatnya.</p>
+        <ul id="contactList" class="mx-auto mt-10 flex max-w-4xl flex-wrap justify-center gap-4 text-left"></ul>
+        <div id="cvRow" class="mt-8" hidden><a id="cvLink" class="btn btn-ghost" href="#" target="_blank" rel="noopener" data-i="contact_cv">Unduh CV ↗</a></div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="gutter border-t border-line py-8">
+  <div class="mx-auto flex max-w-6xl flex-col items-center justify-between gap-2 text-sm text-muted sm:flex-row">
+    <span data-i="foot_rights">© 2026 Marlay Mizan Nurrohman. Semua hak dilindungi.</span>
+    <a href="#top" class="navlink" data-i="foot_top">Kembali ke atas ↑</a>
+  </div>
+</footer>
+<div id="lb" class="lb" hidden role="dialog" aria-modal="true" aria-labelledby="lbTitle">
+  <div class="lb-panel">
+    <div class="flex items-start justify-between gap-3">
+      <div class="min-w-0">
+        <p id="lbPlat" class="plat mb-1"></p>
+        <h3 id="lbTitle" class="font-display text-2xl font-bold leading-tight sm:text-3xl"></h3>
+      </div>
+      <button id="lbClose" type="button" class="iconbtn" aria-label="Tutup" data-ia="a_lbclose">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
+      </button>
+    </div>
+    <div id="lbImg" class="lb-img"></div>
+    <p id="lbDesc" class="text-muted"></p>
+    <div class="flex flex-wrap items-center justify-between gap-3">
+      <div id="lbTags" class="flex min-w-0 flex-wrap gap-1.5"></div>
+      <div class="flex gap-2">
+        <button id="lbPrev" type="button" class="iconbtn" aria-label="Proyek sebelumnya" data-ia="a_lbprev"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 6l-6 6 6 6"/></svg></button>
+        <button id="lbNext" type="button" class="iconbtn" aria-label="Proyek berikutnya" data-ia="a_lbnext"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg></button>
+      </div>
+    </div>
+  </div>
+</div>
+<div id="toast" class="toast" role="status" aria-live="polite">Email disalin</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+  var PROFILE = { whatsapp: '087821250956', email: 'mingkhmes00@gmail.com', linkedin: 'mizan-nurrohman-7899a634b', gitlab: 'mizannurrohman70', instagram: '___mingkhems', cv: '' };
+  var PROJECTS = [
+    { t: 'CBM', p: 'web', c: '#ff6b3d', img: 'cbm', d: 'Platform pemantauan kondisi mesin real time untuk mendeteksi anomali di berbagai zona operasional, mendukung predictive maintenance, dan mengoptimalkan umur alat industri.', e: 'Real-time machine condition monitoring platform that detects anomalies across operational zones, supports predictive maintenance, and extends the lifespan of industrial equipment.', s: ['CodeIgniter', 'MySQL', 'jQuery'] },
+    { t: 'OVH', p: 'web', c: '#38d0c0', img: 'ovh', d: 'Sistem manajemen siklus kerja dan evaluasi performa karyawan berbasis Laravel dan Vue.js, dilengkapi notifikasi real time untuk efisiensi operasional.', e: 'Work cycle management and employee performance evaluation system built with Laravel and Vue.js, with real-time notifications for operational efficiency.', s: ['Laravel', 'Vue.js', 'FCM', 'MySQL'] },
+    { t: 'BMS', p: 'web', c: '#f5b83d', img: 'bms', d: 'Sistem manajemen untuk melacak dan menyelesaikan gangguan teknis mesin, dilengkapi analitik untuk mempercepat perbaikan dan menjaga stabilitas produksi.', e: 'Management system for tracking and resolving machine technical issues, with analytics to speed up repairs and keep production stable.', s: ['CodeIgniter', 'Bootstrap', 'MySQL'] },
+    { t: 'Attendance Pincuran', p: 'android', c: '#7aa2ff', img: 'attendance-pincuran', d: 'Aplikasi absensi berbasis Android dengan validasi radius lokasi (geofencing) dan integrasi notifikasi real time.', e: 'Android attendance app with location radius validation (geofencing) and real-time notification integration.', s: ['Kotlin', 'FCM', 'Spring Boot'] },
+    { t: 'Comrel', p: 'web', c: '#5ad19a', img: 'comrel', d: 'Sistem manajemen dan pemantauan program Corporate Social Responsibility (CSR) untuk mengelola bantuan kepada masyarakat secara transparan.', e: 'Management and monitoring system for Corporate Social Responsibility (CSR) programs, handling aid to the community transparently.', s: ['CodeIgniter', 'Vue.js', 'MySQL'] },
+    { t: 'Gatra Finance', p: 'web', c: '#ff6b9a', img: 'gatra-finance', d: 'Sistem pengelolaan keuangan internal perusahaan yang terintegrasi untuk memantau transaksi, anggaran, dan pelaporan finansial.', e: 'Integrated internal finance management system for monitoring transactions, budgets, and financial reporting.', s: ['Laravel', 'Vue.js', 'SQL Server'] },
+    { t: 'Hippam Tirto Wening', p: 'web', c: '#4dc2ff', img: 'hippam-tirto-wening', d: 'Sistem manajemen pembayaran penggunaan air berbasis web yang dirancang untuk mengelola tagihan, pencatatan meteran, dan rekapitulasi transaksi secara akurat.', e: 'Web-based water usage payment management system designed to handle billing, meter readings, and transaction recaps accurately.', s: ['Laravel', 'jQuery', 'MySQL'] },
+    { t: 'Ikatan Alumni', p: 'web', c: '#b48cff', img: 'ikatan-alumni', d: 'Platform jejaring alumni yang memfasilitasi pelacakan data anggota, pengelolaan program donasi, informasi lowongan kerja, serta notifikasi real time.', e: 'Alumni networking platform that supports member data tracking, donation program management, job opening information, and real-time notifications.', s: ['Express.js', 'Supabase', 'FCM'] },
+    { t: 'M3S', p: 'web', c: '#ff8f5a', img: 'm3s', d: 'Sistem enterprise untuk memantau ketersediaan suku cadang dan manajemen manufaktur guna mendukung kelancaran operasional lini produksi.', e: 'Enterprise system for monitoring spare parts availability and manufacturing management to keep production line operations running smoothly.', s: ['SQL Server', 'Spring Boot', 'Vue.js'] },
+    { t: 'POS Toko Alam', p: 'android', c: '#e6c94a', img: 'pos-atk-toko-alam', d: 'Aplikasi Point of Sale berbasis Android untuk toko alat tulis kantor yang dirancang untuk mengelola transaksi penjualan dan pencatatan inventaris secara efisien.', e: 'Android-based Point of Sale app for a stationery store, designed to manage sales transactions and inventory records efficiently.', s: ['Java Android', 'Supabase'] },
+    { t: 'PPDB SMA Unggulan', p: 'web', c: '#6ee0a0', img: 'ppdb-sma-unggulan', d: 'Sistem penerimaan peserta didik baru secara online yang dilengkapi fitur pelacakan rekam jejak alumni hingga perguruan tinggi dan jalur masuk.', e: 'Online new student admission system with features to track alumni records through to universities and admission pathways.', s: ['Laravel', 'Vue.js', 'MySQL'] }
+  ];
+  var YEARS = 5;
+
+  (function () {
+    var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var fine = window.matchMedia('(hover: hover) and (pointer: fine)').matches && !reduce;
+    var LANG = 'id', ID = {}, filt = 'all';
+    var LABEL = { android: 'Android', web: 'Website' };
+
+    var EN = {
+      a_nav: 'Main navigation', a_mnav: 'Mobile navigation', a_theme: 'Switch between light and dark theme', a_menu: 'Open menu', a_lang: 'Language',
+      a_stage: '3D illustration of a processor chip on a circuit board with orbiting technology icons',
+      a_filters: 'Filter projects', a_lbclose: 'Close', a_lbprev: 'Previous project', a_lbnext: 'Next project',
+      nav_projects: 'Projects', nav_skills: 'Skills', nav_about: 'About', nav_contact: 'Contact',
+      hero_eyebrow: 'Fullstack Developer · open to work opportunities',
+      hero_title: 'A Full-Stack Developer for <span class="mark">web</span> and <span class="mark">Android</span>.',
+      hero_text: "I'm Marlay Mizan Nurrohman, known as Mizan. I design and build end-to-end systems, from database architecture and API management to the user interface, for monitoring, finance, attendance, and Point of Sale (POS) applications, among others.",
+      hero_cta1: 'View projects', hero_cta2: 'Contact me',
+      proj_eyebrow: 'Projects & Work', proj_title: 'Selected Projects',
+      proj_text: 'A range of web and Android solutions I have built. Click an image to enlarge the preview, or hover over a card for an interactive effect.',
+      f_all: 'All',
+      skill_eyebrow: 'Skills', skill_title: 'Technologies I use',
+      sk_back: 'Server logic and APIs for web and mobile systems.',
+      sk_front: 'Web interfaces for dashboards and internal systems.',
+      sk_db: 'Data storage and processing for systems.',
+      sk_and: 'Mobile apps connected to the server.',
+      about_eyebrow: 'About me', about_title: 'Full-Stack Developer. End-to-End Solutions from Interface to Backend',
+      about_text: "I'm Marlay Mizan Nurrohman, known as Mizan. I have experience designing and developing enterprise-scale systems, covering server architecture, databases, and user interfaces, especially for machine monitoring platforms, employee performance management, financial systems, location-based attendance, and Point of Sale (POS), among others.",
+      ab_name: 'Full name', ab_nick: 'Known as', ab_role: 'Role', ab_exp: 'Experience', ab_exp_v: 'About 5 years',
+      ab_focus: 'Focus', ab_focus_v: 'Web and Android', ab_status: 'Status', ab_status_v: 'Open to work',
+      contact_eyebrow: 'Contact', contact_title: 'Have a project or a job opening for me?',
+      contact_note: "Pick whichever way suits you best, I'll reply as soon as I can.",
+      contact_cv: 'Download CV ↗',
+      foot_rights: '© 2026 Marlay Mizan Nurrohman. All rights reserved.', foot_top: 'Back to top ↑'
+    };
+    var DESC_EN = 'Marlay Mizan Nurrohman (Mizan), a fullstack developer with about 5 years of experience building web systems and Android apps.';
+
+    var S = {
+      id: {
+        enlarge: 'Perbesar', projects: 'Proyek', copy: 'Salin', copyAria: 'Salin alamat email', copied: 'Email disalin',
+        manual: 'Salin manual: ', soon: 'Info kontak akan segera ditambahkan.', dark: 'mode gelap', light: 'mode terang',
+        wa: 'Halo Mizan, saya melihat portofolio Anda dan ingin berdiskusi.',
+        alt: function (t, m) { return 'Tampilan ' + t + ', ' + m; },
+        zoomAria: function (t) { return 'Perbesar tampilan ' + t; }
+      },
+      en: {
+        enlarge: 'Enlarge', projects: 'Projects', copy: 'Copy', copyAria: 'Copy email address', copied: 'Email copied',
+        manual: 'Copy manually: ', soon: 'Contact info coming soon.', dark: 'dark mode', light: 'light mode',
+        wa: 'Hello Mizan, I saw your portfolio and would like to talk.',
+        alt: function (t, m) { return t + ' preview, ' + m; },
+        zoomAria: function (t) { return 'Enlarge preview of ' + t; }
+      }
+    };
+    function s(k) { return S[LANG][k]; }
+    function esc(v) { return String(v).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
+
+    function imgs(pr) {
+      var b = 'img/' + pr.img;
+      return '<img class="shot-dark" src="' + b + '-dark.webp" alt="' + esc(s('alt')(pr.t, s('dark'))) + '" loading="lazy" decoding="async">' +
+             '<img class="shot-light" src="' + b + '-light.webp" alt="' + esc(s('alt')(pr.t, s('light'))) + '" loading="lazy" decoding="async">';
+    }
+    function tagsOf(pr) { return pr.s.map(function (x) { return '<span class="tag">' + esc(x) + '</span>'; }).join(''); }
+    function descOf(pr) { return LANG === 'en' && pr.e ? pr.e : pr.d; }
+
+    function card(pr, i) {
+      return '<div class="tiltwrap"><article class="proj" style="--c:' + pr.c + ';animation-delay:' + (Math.min(i, 8) * 60) + 'ms">' +
+        '<button type="button" class="shot lift" data-i="' + i + '" aria-label="' + esc(s('zoomAria')(pr.t)) + '">' + imgs(pr) + '<span class="zoom" aria-hidden="true">' + s('enlarge') + '</span></button>' +
+        '<div class="lift2 flex flex-1 flex-col gap-3 p-3 pt-4">' +
+        '<div class="flex items-center justify-between"><span class="plat"><i></i>' + LABEL[pr.p] + '</span></div>' +
+        '<h3 class="font-display text-2xl font-bold leading-tight">' + esc(pr.t) + '</h3>' +
+        '<p class="text-sm text-muted">' + esc(descOf(pr)) + '</p>' +
+        '<div class="mt-auto flex flex-wrap gap-1.5 pt-1">' + tagsOf(pr) + '</div></div></article></div>';
+    }
+
+    function bindTilt(el) {
+      if (!fine) return;
+      el.addEventListener('pointermove', function (e) {
+        var r = el.getBoundingClientRect();
+        var px = (e.clientX - r.left) / r.width, py = (e.clientY - r.top) / r.height;
+        el.style.setProperty('--ry', ((px - .5) * 12).toFixed(2) + 'deg');
+        el.style.setProperty('--rx', ((.5 - py) * 10).toFixed(2) + 'deg');
+        el.style.setProperty('--mx', (px * 100).toFixed(1) + '%');
+        el.style.setProperty('--my', (py * 100).toFixed(1) + '%');
+      });
+      el.addEventListener('pointerleave', function () {
+        el.style.setProperty('--rx', '0deg'); el.style.setProperty('--ry', '0deg');
+      });
+    }
+
+    var grid = document.getElementById('grid'), cur = PROJECTS.slice();
+    function render(f) {
+      filt = f;
+      cur = PROJECTS.filter(function (x) { return f === 'all' || x.p === f; });
+      grid.innerHTML = cur.map(card).join('');
+      Array.prototype.forEach.call(grid.querySelectorAll('.proj'), bindTilt);
+    }
+
+    var filters = document.getElementById('filters');
+    filters.addEventListener('click', function (e) {
+      var b = e.target.closest('button[data-f]');
+      if (!b) return;
+      Array.prototype.forEach.call(filters.children, function (c) { c.setAttribute('aria-pressed', c === b ? 'true' : 'false'); });
+      render(b.getAttribute('data-f'));
+    });
+
+    var lb = document.getElementById('lb'), idx = 0, opener = null;
+    function fillLb() {
+      var pr = cur[idx];
+      if (!pr) return;
+      document.getElementById('lbTitle').textContent = pr.t;
+      var pl = document.getElementById('lbPlat'); pl.style.setProperty('--c', pr.c); pl.innerHTML = '<i></i>' + LABEL[pr.p];
+      document.getElementById('lbDesc').textContent = descOf(pr);
+      document.getElementById('lbTags').innerHTML = tagsOf(pr);
+      document.getElementById('lbImg').innerHTML = imgs(pr);
+      var multi = cur.length > 1;
+      document.getElementById('lbPrev').hidden = !multi; document.getElementById('lbNext').hidden = !multi;
+    }
+    function openLb(i, from) {
+      idx = i; opener = from; fillLb(); lb.hidden = false;
+      document.body.style.overflow = 'hidden';
+      document.getElementById('lbClose').focus();
+    }
+    function closeLb() {
+      lb.hidden = true; document.body.style.overflow = '';
+      if (opener && opener.focus) opener.focus();
+    }
+    function step(d) { idx = (idx + d + cur.length) % cur.length; fillLb(); }
+    grid.addEventListener('click', function (e) {
+      var b = e.target.closest('.shot'); if (!b) return;
+      openLb(parseInt(b.getAttribute('data-i'), 10), b);
+    });
+    document.getElementById('lbClose').addEventListener('click', closeLb);
+    document.getElementById('lbPrev').addEventListener('click', function () { step(-1); });
+    document.getElementById('lbNext').addEventListener('click', function () { step(1); });
+    lb.addEventListener('click', function (e) { if (e.target === lb) closeLb(); });
+    document.addEventListener('keydown', function (e) {
+      if (lb.hidden) return;
+      if (e.key === 'Escape') { closeLb(); }
+      else if (e.key === 'ArrowLeft' && cur.length > 1) { step(-1); }
+      else if (e.key === 'ArrowRight' && cur.length > 1) { step(1); }
+      else if (e.key === 'Tab') {
+        var f = Array.prototype.filter.call(lb.querySelectorAll('button'), function (x) { return !x.hidden; });
+        if (!f.length) return;
+        var first = f[0], last = f[f.length - 1];
+        if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+        else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+      }
+    });
+
+    function count(p) { return PROJECTS.filter(function (x) { return x.p === p; }).length; }
+    function renderStats() {
+      var stats = [[s('projects'), PROJECTS.length], ['Web', count('web')], ['Android', count('android')]];
+      document.getElementById('stats').innerHTML = stats.map(function (x) {
+        return '<div><dd class="font-display text-3xl font-extrabold">' + x[1] + '</dd><dt class="eyebrow mt-1">' + x[0] + '</dt></div>';
+      }).join('');
+    }
+
+    function svg(p) { return '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' + p + '</svg>'; }
+    var ICON = {
+      wa: svg('<path d="M20 11.5a8 8 0 0 1-11.7 7.1L4 20l1.4-4.1A8 8 0 1 1 20 11.5z"/><path d="M9.3 8.8c.2 2.4 2.5 4.7 5 5.1l1.1-1.2-1.8-1-.8.7c-.9-.3-1.7-1.1-2-2l.7-.8-1-1.8z"/>'),
+      mail: svg('<rect x="3" y="5" width="18" height="14" rx="2.5"/><path d="M3.5 7.5l8.5 6 8.5-6"/>'),
+      li: svg('<rect x="3.5" y="3.5" width="17" height="17" rx="3"/><path d="M8 10.5V16M8 7.8v.2M11.5 16v-5.5M11.5 13c0-1.5 1.1-2.5 2.5-2.5s2 1 2 2.5V16"/>'),
+      gl: svg('<path d="M12 20.5L3 14l2.2-7 2.4 5.6h8.8L18.8 7 21 14l-9 6.5z"/>'),
+      ig: svg('<rect x="3.5" y="3.5" width="17" height="17" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.2" cy="6.8" r=".7" fill="currentColor" stroke="none"/>')
+    };
+    function fullUrl(v, base) {
+      v = String(v || '').trim();
+      if (!v) return '';
+      if (/^https?:\/\//i.test(v)) return v;
+      if (/^(www\.)?[a-z0-9-]+\.[a-z]{2,}\//i.test(v)) return 'https://' + v;
+      return base + v.replace(/^@/, '').replace(/^\/+/, '');
+    }
+    function shown(u) { return u.replace(/^https?:\/\/(www\.)?/i, '').replace(/\/+$/, ''); }
+    function renderContact() {
+      var P = PROFILE, items = [];
+      if (P.whatsapp) {
+        var n = String(P.whatsapp).replace(/\D/g, '');
+        if (n.charAt(0) === '0') n = '62' + n.slice(1);
+        if (n) items.push({ k: 'WhatsApp', v: '+' + n, href: 'https://wa.me/' + n + '?text=' + encodeURIComponent(s('wa')), c: '#25d366', i: 'wa', ext: true });
+      }
+      if (P.email) items.push({ k: 'Email', v: P.email, href: 'mailto:' + P.email, c: 'var(--accent)', i: 'mail', copy: P.email });
+      if (P.linkedin) { var li = fullUrl(P.linkedin, 'https://www.linkedin.com/in/'); items.push({ k: 'LinkedIn', v: shown(li), href: li, c: '#0a66c2', i: 'li', ext: true }); }
+      if (P.gitlab) { var gl = fullUrl(P.gitlab, 'https://gitlab.com/'); items.push({ k: 'GitLab', v: shown(gl), href: gl, c: '#fc6d26', i: 'gl', ext: true }); }
+      if (P.instagram) {
+        var ig = String(P.instagram).trim().replace(/^(https?:\/\/)?(www\.)?instagram\.com\//i, '').replace(/[\/?#].*$/, '').replace(/^@/, '');
+        if (ig) items.push({ k: 'Instagram', v: '@' + ig, href: 'https://instagram.com/' + ig, c: '#e1306c', i: 'ig', ext: true });
+      }
+      document.getElementById('contactList').innerHTML = items.map(function (x) {
+        return '<li class="cbox" style="--c:' + x.c + '">' +
+          '<a class="main" href="' + esc(x.href) + '"' + (x.ext ? ' target="_blank" rel="noopener"' : '') + '>' +
+          '<span class="cico">' + ICON[x.i] + '</span>' +
+          '<span class="txt"><span class="eyebrow">' + x.k + '</span><span class="val">' + (x.copy ? esc(x.v).replace('@', '@<wbr>') : esc(x.v)) + '</span></span></a>' +
+          (x.copy ? '<button type="button" class="copy" data-copy="' + esc(x.copy) + '" aria-label="' + esc(s('copyAria')) + '">' + s('copy') + '</button>' : '') +
+          '</li>';
+      }).join('');
+      if (!items.length) document.getElementById('contactNote').textContent = s('soon');
+      var cvr = document.getElementById('cvRow');
+      cvr.hidden = !P.cv;
+      if (P.cv) document.getElementById('cvLink').href = P.cv;
+    }
+
+    var menuBtn = document.getElementById('menuBtn'), mnav = document.getElementById('mobileNav');
+    function setMenu(open) {
+      mnav.hidden = !open; mnav.style.display = open ? 'flex' : '';
+      menuBtn.setAttribute('aria-expanded', open ? 'true' : 'false');
+    }
+    menuBtn.addEventListener('click', function () { setMenu(mnav.hidden); });
+    mnav.addEventListener('click', function (e) { if (e.target.closest('a')) setMenu(false); });
+
+    var root = document.documentElement;
+    document.getElementById('themeBtn').addEventListener('click', function () {
+      var cur = root.getAttribute('data-theme') || (window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark');
+      var next = cur === 'dark' ? 'light' : 'dark';
+      root.setAttribute('data-theme', next);
+      try { localStorage.setItem('pf-theme', next); } catch (e) {}
+    });
+    try { var saved = localStorage.getItem('pf-theme'); if (saved) root.setAttribute('data-theme', saved); } catch (e) {}
+
+    var toast = document.getElementById('toast'), tmr;
+    function say(msg) { toast.textContent = msg; toast.classList.add('show'); clearTimeout(tmr); tmr = setTimeout(function () { toast.classList.remove('show'); }, 2200); }
+    document.addEventListener('click', function (e) {
+      var b = e.target.closest('[data-copy]'); if (!b) return;
+      var txt = b.getAttribute('data-copy');
+      function manual() { say(s('manual') + txt); }
+      try { navigator.clipboard.writeText(txt).then(function () { say(s('copied')); }, manual); } catch (err) { manual(); }
+    });
+
+    var hero = document.getElementById('hero'), glow = document.getElementById('heroGlow');
+    if (fine) hero.addEventListener('pointermove', function (e) {
+      var r = hero.getBoundingClientRect();
+      glow.style.setProperty('--gx', (e.clientX - r.left) + 'px');
+      glow.style.setProperty('--gy', (e.clientY - r.top) + 'px');
+    });
+
+    function capture() {
+      Array.prototype.forEach.call(document.querySelectorAll('[data-i]'), function (el) { ID[el.getAttribute('data-i')] = el.innerHTML; });
+      Array.prototype.forEach.call(document.querySelectorAll('[data-ia]'), function (el) { ID[el.getAttribute('data-ia')] = el.getAttribute('aria-label'); });
+      ID.meta = document.querySelector('meta[name="description"]').getAttribute('content');
+    }
+    function applyLang(l) {
+      LANG = l;
+      var d = l === 'en' ? EN : ID;
+      document.documentElement.lang = l;
+      Array.prototype.forEach.call(document.querySelectorAll('[data-i]'), function (el) {
+        var k = el.getAttribute('data-i');
+        if (d[k] !== undefined) el.innerHTML = d[k];
+      });
+      Array.prototype.forEach.call(document.querySelectorAll('[data-ia]'), function (el) {
+        var k = el.getAttribute('data-ia');
+        if (d[k] !== undefined) el.setAttribute('aria-label', d[k]);
+      });
+      Array.prototype.forEach.call(document.querySelectorAll('meta[name="description"], meta[property="og:description"]'), function (m) {
+        m.setAttribute('content', l === 'en' ? DESC_EN : ID.meta);
+      });
+      Array.prototype.forEach.call(document.querySelectorAll('.lang button'), function (b) {
+        b.setAttribute('aria-pressed', b.getAttribute('data-lang') === l ? 'true' : 'false');
+      });
+      render(filt); renderStats(); renderContact();
+      if (!lb.hidden) fillLb();
+      try { localStorage.setItem('pf-lang', l); } catch (e) {}
+    }
+    document.querySelector('.lang').addEventListener('click', function (e) {
+      var b = e.target.closest('button[data-lang]');
+      if (b) applyLang(b.getAttribute('data-lang'));
+    });
+
+    var startLang = 'id';
+    try { var sl = localStorage.getItem('pf-lang'); if (sl === 'en' || sl === 'id') startLang = sl; } catch (e) {}
+    capture();
+    applyLang(startLang);
+  })();
+
+  (function () {
+    var host = document.getElementById('stage');
+    var fb = document.getElementById('stageFb');
+    if (!host) return;
+    var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var live = false, raf = 0, visible = true, failed = false;
+    var mx = 0, my = 0, cx = 0, cy = 0, hasPtr = false, t0 = performance.now();
+    var renderer = null, draw = function () {}, theme = function () {};
+
+    function fail(err) {
+      failed = true; live = false;
+      if (raf) cancelAnimationFrame(raf);
+      try { if (renderer && renderer.domElement.parentNode) renderer.domElement.parentNode.removeChild(renderer.domElement); } catch (e) {}
+      if (fb) fb.hidden = false;
+      if (window.console) console.warn('Scene 3D diganti tampilan cadangan:', err);
+    }
+    if (!window.THREE) { fail('three.js tidak termuat'); return; }
+    try { renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true }); } catch (e) { fail(e); return; }
+
+    try {
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+      host.appendChild(renderer.domElement);
+
+      var scene = new THREE.Scene();
+      var camera = new THREE.PerspectiveCamera(45, 1, 0.1, 100);
+      camera.position.set(0, 0, 10.4);
+      var rig = new THREE.Group(); rig.position.y = -0.15; scene.add(rig);
+
+      var bodyMat = new THREE.MeshStandardMaterial({ color: 0x1b2433, metalness: .55, roughness: .38 });
+      var plateMat = new THREE.MeshStandardMaterial({ color: 0xcfd9e8, metalness: .75, roughness: .28 });
+      var pinMat = new THREE.MeshStandardMaterial({ color: 0xcfd9e8, metalness: .85, roughness: .3 });
+      var dieMat = new THREE.MeshStandardMaterial({ color: 0x0e1420, metalness: .3, roughness: .5, emissive: 0xff6b3d, emissiveIntensity: .25 });
+      var gridMat = new THREE.LineBasicMaterial({ color: 0x38d0c0, transparent: true, opacity: .26 });
+      var traceMat = new THREE.LineBasicMaterial({ color: 0x38d0c0, transparent: true, opacity: .7 });
+      var nodeMat = new THREE.MeshBasicMaterial({ color: 0x38d0c0 });
+      var packetMat = new THREE.MeshBasicMaterial({ color: 0xff6b3d });
+      var ringMat = new THREE.LineBasicMaterial({ color: 0x38d0c0, transparent: true, opacity: .38 });
+      var edgeA = new THREE.LineBasicMaterial({ color: 0xff6b3d });
+      var edgeB = new THREE.LineBasicMaterial({ color: 0x38d0c0 });
+      var fillA = new THREE.MeshBasicMaterial({ color: 0xff6b3d, transparent: true, opacity: .14, depthWrite: false });
+      var fillB = new THREE.MeshBasicMaterial({ color: 0x38d0c0, transparent: true, opacity: .14, depthWrite: false });
+      var spriteA = [], spriteB = [];
+      var starMat = new THREE.PointsMaterial({ color: 0x8d9bb0, size: .045, transparent: true, opacity: .8 });
+
+      var labels = [];
+      function paintLabel(l) {
+        var c = l.cv.getContext('2d'), s = l.cv.width;
+        c.clearRect(0, 0, s, s);
+        c.fillStyle = '#ffffff'; c.textAlign = 'center'; c.textBaseline = 'middle';
+        if (l.chip) {
+          c.font = '700 120px "JetBrains Mono", ui-monospace, monospace'; c.fillText('</>', s / 2, s * .44);
+          c.font = '600 26px "JetBrains Mono", ui-monospace, monospace'; c.fillText('NAMA.DEV', s / 2, s * .8);
+          c.strokeStyle = '#ffffff'; c.lineWidth = 5; c.strokeRect(14, 14, s - 28, s - 28);
+        } else {
+          c.font = '700 ' + (l.text.length > 3 ? 34 : 44) + 'px "JetBrains Mono", ui-monospace, monospace';
+          c.fillText(l.text, s / 2, s / 2 + 2);
+        }
+        if (l.tex) l.tex.needsUpdate = true;
+      }
+      function makeLabel(text, size, chip) {
+        var cv = document.createElement('canvas'); cv.width = cv.height = size;
+        var l = { cv: cv, text: text, chip: chip, tex: null };
+        paintLabel(l); l.tex = new THREE.CanvasTexture(cv); labels.push(l);
+        return l.tex;
+      }
+
+      var GY = -1.05, gp = [], S = 3.6;
+      for (var gi = -6; gi <= 6; gi++) { var gv = gi * .6; gp.push(-S, GY, gv, S, GY, gv, gv, GY, -S, gv, GY, S); }
+      var gg = new THREE.BufferGeometry(); gg.setAttribute('position', new THREE.Float32BufferAttribute(gp, 3));
+      rig.add(new THREE.LineSegments(gg, gridMat));
+
+      var hc = document.createElement('canvas'); hc.width = hc.height = 128;
+      var hx = hc.getContext('2d'), hg = hx.createRadialGradient(64, 64, 0, 64, 64, 64);
+      hg.addColorStop(0, 'rgba(255,255,255,1)'); hg.addColorStop(1, 'rgba(255,255,255,0)');
+      hx.fillStyle = hg; hx.fillRect(0, 0, 128, 128);
+      var haloMat = new THREE.MeshBasicMaterial({ map: new THREE.CanvasTexture(hc), color: 0xff6b3d, transparent: true, opacity: .5, depthWrite: false, blending: THREE.AdditiveBlending });
+      var halo = new THREE.Mesh(new THREE.PlaneGeometry(5.2, 5.2), haloMat);
+      halo.rotation.x = -Math.PI / 2; halo.position.y = GY + .01; rig.add(halo);
+
+      var TY = GY + .012;
+      var paths = [
+        [[1.6, -.5], [2.3, -.5], [2.3, -1.5], [3.3, -1.5]],
+        [[1.6, .25], [2.7, .25], [2.7, 1.3], [3.3, 1.3]],
+        [[1.6, .95], [2.1, .95], [2.1, 2.4], [2.8, 2.4], [2.8, 3.3]],
+        [[-1.6, -.9], [-2.4, -.9], [-2.4, -2.1], [-3.3, -2.1]],
+        [[-1.6, .5], [-2.7, .5], [-2.7, 1.8], [-3.3, 1.8]],
+        [[-.6, 1.6], [-.6, 2.5], [-1.7, 2.5], [-1.7, 3.3]],
+        [[.5, -1.6], [.5, -2.6], [1.6, -2.6], [1.6, -3.3]],
+        [[-.4, -1.6], [-.4, -2.3], [-1.3, -2.3], [-1.3, -3.3]]
+      ];
+      var packets = [], nodeGeo = new THREE.SphereGeometry(.06, 10, 10), packGeo = new THREE.SphereGeometry(.09, 10, 10);
+      paths.forEach(function (p, pi) {
+        var pts = p.map(function (q) { return new THREE.Vector3(q[0], TY, q[1]); });
+        rig.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints(pts), traceMat));
+        var node = new THREE.Mesh(nodeGeo, nodeMat); node.position.copy(pts[pts.length - 1]); rig.add(node);
+        var segs = [], total = 0;
+        for (var i = 1; i < pts.length; i++) { var l = pts[i].distanceTo(pts[i - 1]); segs.push(l); total += l; }
+        var m = new THREE.Mesh(packGeo, packetMat); rig.add(m);
+        packets.push({ m: m, pts: pts, segs: segs, total: total, sp: .6 + (pi % 3) * .2, off: pi * 1.1 });
+      });
+
+      var chip = new THREE.Group(); chip.scale.setScalar(1.25); rig.add(chip);
+      var base = new THREE.Mesh(new THREE.BoxGeometry(2.2, .28, 2.2), bodyMat); chip.add(base);
+      var plate = new THREE.Mesh(new THREE.BoxGeometry(1.78, .07, 1.78), plateMat); plate.position.y = .175; chip.add(plate);
+      var die = new THREE.Mesh(new THREE.BoxGeometry(1.1, .06, 1.1), dieMat); die.position.y = .24; chip.add(die);
+      var labelMat = new THREE.MeshBasicMaterial({ map: makeLabel('', 256, true), color: 0xff6b3d, transparent: true, depthWrite: false });
+      var lab = new THREE.Mesh(new THREE.PlaneGeometry(1.0, 1.0), labelMat);
+      lab.rotation.x = -Math.PI / 2; lab.position.y = .275; chip.add(lab);
+      var pinG1 = new THREE.BoxGeometry(.075, .05, .2), pinG2 = new THREE.BoxGeometry(.2, .05, .075);
+      for (var pn = 0; pn < 9; pn++) {
+        var o = -.88 + pn * .22;
+        [[o, 1.19], [o, -1.19]].forEach(function (q) { var m = new THREE.Mesh(pinG1, pinMat); m.position.set(q[0], -.02, q[1]); chip.add(m); });
+        [[1.19, o], [-1.19, o]].forEach(function (q) { var m = new THREE.Mesh(pinG2, pinMat); m.position.set(q[0], -.02, q[1]); chip.add(m); });
+      }
+
+      function layer(w, fill, edge) {
+        var g = new THREE.Group();
+        g.add(new THREE.Mesh(new THREE.BoxGeometry(w, .05, w), fill));
+        g.add(new THREE.LineSegments(new THREE.EdgesGeometry(new THREE.BoxGeometry(w, .05, w)), edge));
+        return g;
+      }
+      var L1 = layer(2.3, fillB, edgeB), L2 = layer(1.7, fillA, edgeA);
+      rig.add(L1); rig.add(L2);
+      rig.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(0, -.1, 0), new THREE.Vector3(0, 1.8, 0)]), traceMat));
+
+      var rings = [];
+      function makeRing(R, rotX, rotZ, y, sp, items) {
+        var grp = new THREE.Group(); grp.rotation.set(rotX, 0, rotZ); grp.position.y = y; rig.add(grp);
+        var pts = [];
+        for (var k = 0; k < 140; k++) { var q = k / 140 * Math.PI * 2; pts.push(new THREE.Vector3(Math.cos(q) * R, 0, Math.sin(q) * R)); }
+        grp.add(new THREE.LineLoop(new THREE.BufferGeometry().setFromPoints(pts), ringMat));
+        var list = items.map(function (d, idx) {
+          var g = new THREE.Group(), cube = new THREE.Group();
+          var isA = d[1] === 'a';
+          cube.add(new THREE.LineSegments(new THREE.EdgesGeometry(new THREE.BoxGeometry(.74, .74, .74)), isA ? edgeA : edgeB));
+          cube.add(new THREE.Mesh(new THREE.BoxGeometry(.72, .72, .72), isA ? fillA : fillB));
+          var sm = new THREE.SpriteMaterial({ map: makeLabel(d[0], 128, false), color: isA ? 0xff6b3d : 0x38d0c0, transparent: true, depthWrite: false });
+          (isA ? spriteA : spriteB).push(sm);
+          var sp2 = new THREE.Sprite(sm); sp2.scale.set(.72, .72, 1);
+          g.add(cube); g.add(sp2); grp.add(g);
+          return { g: g, cube: cube, ph: idx * Math.PI * 2 / items.length };
+        });
+        rings.push({ R: R, sp: sp, items: list });
+      }
+      makeRing(3.0, .12, -.16, .55, .42, [['</>', 'a'], ['APK', 'b'], ['VUE', 'a']]);
+      makeRing(3.5, -.14, .3, -.1, -.3, [['{ }', 'b'], ['SQL', 'a'], ['API', 'b']]);
+
+      var N = 300, sp3 = new Float32Array(N * 3);
+      for (var i = 0; i < N; i++) {
+        var r2 = 5 + Math.random() * 3, th = Math.random() * Math.PI * 2, ph2 = Math.acos(2 * Math.random() - 1);
+        sp3[i * 3] = r2 * Math.sin(ph2) * Math.cos(th); sp3[i * 3 + 1] = r2 * Math.sin(ph2) * Math.sin(th) * .8; sp3[i * 3 + 2] = r2 * Math.cos(ph2) - 3;
+      }
+      var sg = new THREE.BufferGeometry(); sg.setAttribute('position', new THREE.Float32BufferAttribute(sp3, 3));
+      var stars = new THREE.Points(sg, starMat); scene.add(stars);
+
+      scene.add(new THREE.AmbientLight(0xffffff, .75));
+      var dl = new THREE.DirectionalLight(0xffffff, .55); dl.position.set(0, 5, 4); scene.add(dl);
+      var l1 = new THREE.PointLight(0xff6b3d, 2.2, 30); l1.position.set(4, 4, 5); scene.add(l1);
+      var l2 = new THREE.PointLight(0x38d0c0, 2.0, 30); l2.position.set(-5, 2, 4); scene.add(l2);
+
+      var css = function (n) { return getComputedStyle(document.documentElement).getPropertyValue(n).trim(); };
+      theme = function () {
+        var a = css('--accent'), t = css('--teal'), o = css('--obj'), m = css('--muted');
+        try {
+          [edgeA, fillA, packetMat, labelMat, haloMat].forEach(function (x) { x.color.set(a); });
+          [edgeB, fillB, gridMat, traceMat, nodeMat, ringMat].forEach(function (x) { x.color.set(t); });
+          spriteA.forEach(function (x) { x.color.set(a); }); spriteB.forEach(function (x) { x.color.set(t); });
+          dieMat.emissive.set(a); l1.color.set(a); l2.color.set(t);
+          plateMat.color.set(o); pinMat.color.set(o); starMat.color.set(m);
+        } catch (e) {}
+        if (!live) draw(1.2);
+      };
+      new MutationObserver(theme).observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
+      var mq = window.matchMedia('(prefers-color-scheme: light)');
+      if (mq.addEventListener) mq.addEventListener('change', theme);
+      if (document.fonts && document.fonts.ready) document.fonts.ready.then(function () { labels.forEach(paintLabel); if (!live && !failed) draw(1.2); });
+
+      var resize = function () {
+        var w = host.clientWidth, h = host.clientHeight;
+        if (!w || !h || failed) return;
+        renderer.setSize(w, h, false);
+        camera.aspect = w / h;
+        camera.position.z = Math.max(9, 8.8 / (0.8284 * camera.aspect));
+        camera.updateProjectionMatrix();
+        if (!live) draw(1.2);
+      };
+      if (window.ResizeObserver) new ResizeObserver(resize).observe(host); else window.addEventListener('resize', resize);
+
+      window.addEventListener('pointermove', function (e) {
+        if (e.pointerType && e.pointerType !== 'mouse') return;
+        hasPtr = true;
+        mx = (e.clientX / window.innerWidth - .5) * 2; my = (e.clientY / window.innerHeight - .5) * 2;
+      });
+
+      draw = function (t) {
+        if (failed) return;
+        t = t || 0;
+        var tx = hasPtr ? mx : Math.sin(t * .35) * .5, ty = hasPtr ? my : Math.cos(t * .3) * .25;
+        cx += (tx - cx) * .06; cy += (ty - cy) * .06;
+        rig.rotation.y = t * .2 + cx * .7;
+        rig.rotation.x = .52 + cy * .18;
+        chip.position.y = -.5 + Math.sin(t * 1.3) * .05;
+        L1.position.y = .95 + Math.sin(t * 1.1 + 1) * .07; L1.rotation.y = t * .3;
+        L2.position.y = 1.5 + Math.sin(t * 1.3 + 2) * .07; L2.rotation.y = -t * .25;
+        labelMat.opacity = .82 + .18 * Math.sin(t * 2.4);
+        dieMat.emissiveIntensity = .28 + .14 * Math.sin(t * 2.4);
+        halo.material.opacity = .45 + .1 * Math.sin(t * 1.6);
+        packets.forEach(function (k) {
+          var d = (t * k.sp + k.off) % (k.total + .9);
+          if (d > k.total) { k.m.visible = false; return; }
+          k.m.visible = true;
+          var i = 0; while (i < k.segs.length - 1 && d > k.segs[i]) { d -= k.segs[i]; i++; }
+          k.m.position.lerpVectors(k.pts[i], k.pts[i + 1], Math.min(d / k.segs[i], 1));
+        });
+        rings.forEach(function (rg) {
+          rg.items.forEach(function (it, idx) {
+            var a = it.ph + t * rg.sp;
+            it.g.position.set(Math.cos(a) * rg.R, Math.sin(a * 2 + idx) * .1, Math.sin(a) * rg.R);
+            it.cube.rotation.y = t * .6 + idx; it.cube.rotation.x = t * .35;
+          });
+        });
+        stars.rotation.y = t * .015;
+        renderer.render(scene, camera);
+      };
+      var frame = function (now) {
+        raf = 0;
+        try { draw((now - t0) / 1000); } catch (e) { fail(e); return; }
+        if (live && visible && !failed) raf = requestAnimationFrame(frame);
+      };
+
+      theme(); resize();
+      if (reduce) { draw(1.2); } else {
+        live = true; raf = requestAnimationFrame(frame);
+        if (window.IntersectionObserver) new IntersectionObserver(function (e) {
+          visible = e[0].isIntersecting;
+          if (visible && !raf && live && !failed) raf = requestAnimationFrame(frame);
+        }).observe(host);
+      }
+    } catch (err) { fail(err); }
+  })();
+</script>
+</body>
+</html>
